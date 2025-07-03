@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Step10_array4</title>
+</head>
+
+<body>
+    <script>
+        const names = ["박", "종", "복"];
+        //배열에 새로운 아이템 추가
+        names.push("가");
+        names.push("나");
+
+        //새로운 배열을 만들면서 새로운 배열에 아이템 추가
+        const names2 = names.concat("추가1");
+        const names3 = names.concat("추가2", "추가3", "추가4");
+        //...names는 names 배열안에 저장된 아이템을 펼치는 역할을 함 
+        //그후에, "나임" 을 배열에 더함
+        const names4 = [...names, "나임"];
+
+    </script>
+</body>
+
+</html>
