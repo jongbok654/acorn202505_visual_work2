@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Step10_array2.html</title>
+</head>
+
+<body>
+    <script>
+        const names = ["박", "종", "복"];
+        //["박님","종님","복님"]이런 배열을 만들어서 참조값을 names2라는 상수에 담아보세요.
+
+        const names2 = names.map((item) => {
+            return item + "님";
+        });
+
+        const names11 = ["가", "나", "다"];
+        const names22 = names11.map(item => item + "라");
+        console.log(names22);
+
+
+        //names 배열을 이용해서
+        //["<li>박</li>","<li>종</li>","<li>복</li>"]이런 배열을 만든 다음
+        //참조값을 names3 라는 상수에 담아보세요
+
+        const names3=names.map((item)=>{
+            return `<li>${item}</li>`;
+        });
+        console.log(names3);
+        
+
+
+    </script>
+</body>
+
+</html>
