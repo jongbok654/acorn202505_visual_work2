@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Step14_promise4.html</title>
+</head>
+
+<body>
+    <h3>이미지를 선택하세요</h3>
+    <!---------------------------------------image/ 뒤에 *는 image 폴더의 모든 파일 선택가능,,  multiple을 작성하면  파일을 여러개 선택 가능-->
+    <input type="file" id="fileInput" accept="image/*" multiple><!--파일 선택 버튼 생성, -->
+    <div id="preview"></div>
+    <script>
+        //fileReader를 promise로 감싸는 함수 (Promise 객체를 리턴하는 함수)
+        function readFile(file) {
+            //promise는 Promise의 resolve로 전달한 데이터가 매개변수가 되는 함수를 실행하는 객체가됨!!!
+            const promise = new Promise((resolve) => {
+                //이 안에서 비동기 동작을 하고 동작이 완료되면 reslove() 함수를 호출한다.
+                //호출 하면서 필요시 매개 변수에 동작의 결과 데이터를 전달할 수도 있다.
+                const reader = new FileReader();
+
+                //언제 끝날지 모르기 때문에 비동기 동작임!
+                reader.readAsDataURL(file);
+                //다 읽었으면 reslove() 호출
+                reader.onload = () => {
+                    resolve(reader.result); //then((data)=>{})
+                };
+            });
+            return promise;
+        }
+        //위에까지 코드가  Promise인 readFile 함수 생성과정
+
+        //이미지 파일을 선택했을 때 실행할 함수 등록                     .
+
+        //비동기 함수는 바로 return하는게 아닌 시간이 좀 걸리는 함수임!     //async를 선언함으로써 비동기 함수가 됨
+        document.querySelector("#fileInput").addEventListener("change", async (e) => {
+            //매개변수  e는 이벤트가 일어난 참조값을 담고있음.
+            const files = e.target.files; // e.target.files는 선택된 파일 객체가 들어 있는 파일 배열임.
+
+            /*
+            awit Promise 객체
+
+            -await 예약이 우측에 있는 Promise 객체가 resolve 될 때까지 기다린다는 의미
+            -해당 Promise가 resolve되면 결과 데이터가 리턴된다.
+            -리턴된 결과 데이터가 좌측의 변수나 상수에 대입된다
+            -await이 들어 있는 함수는 반드시 비동기(async)함수로 만들어야 한다
+            */
+            try {
+                const data1 = await readFile(files[0]);
+                const img1 = `<img src="${data1}">`;
+                document.querySelector("#preview").insertAdjacentHTML("beforeend", img1);
+
+                const data2 = await readFile(files[1]);
+                const img2 = `<img src="${data2}">`;
+                document.querySelector("#preview").insertAdjacentHTML("beforeend", img2);
+            } catch (err) {
+                console.log(err);
+            }
+        });
+
+        async function test() {
+            console.log("test 함수 시작");
+            const data = await new Promise((resolve) => {
+                console.log("3초가 걸리는 작업 시작");
+                setTimeout(() => {
+                    resolve("hello~");
+                }, 3000);
+            });
+            console.log("data:" + data);
+            console.log("test 함수 리턴");
+
+        }
+    </script>
+
+</body>
+
+</html>

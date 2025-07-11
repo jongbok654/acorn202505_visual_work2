@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Step14_promise.html</title>
+</head>
+
+<body>
+    <script>
+        //기상하는 함수
+        function wakeUp(callback) {
+
+            //기상을 완료한 후에
+
+            //callback 함수를 호출한다
+            setTimeout(() => {
+                console.log("1.기상 완료");
+                callback();
+
+            }, 1000);
+        }
+
+        //밥먹는 함수
+        function eatBraekfast() {
+
+        }
+        //학교 가는 함수
+        function goToSchool() {
+
+        }
+
+        wakeUp(() => {
+            eatBraekfast();
+        });
+
+        function calculate(a, b, callback) {
+            const result = a + b;
+            callback(result);
+        }
+        calculate(3, 4, function (sum) {
+            console.log(`결과는 ${sum}입니다.`);
+        })
+
+        const numbers = [1, 2, 3];
+        const doubled = numbers.map(function (n) {
+            return n * 2;
+        });
+        console.log(doubled);
+
+        function login(user, onSuccess, onFail) {
+            if (user === "admin") {
+                onSuccess("로그인 성공");
+            } else {
+                onFail("로그인 실패");
+            }
+        }
+
+        login(
+            "admin",
+            //onSuccess 자리임. ==> user가 admin이라 onSuccess 실행
+            function (message) {
+                console.log("✅ " + message);
+            },
+            //onFail 자리임.
+            function (error) {
+                console.log("❌ " + error);
+            }
+        );
+
+  
+        const arr = [3, 1, 2];
+        arr.sort(function (a, b) {
+            console.log("배열 정리");
+            return a - b;
+        });
+        console.log(arr); // [1, 2, 3]
+
+        const arr2=[6,4,5];
+        arr2.sort((a,b)=>a-b);
+        console.log(arr2);
+     
+
+    </script>
+</body>
+
+</html>

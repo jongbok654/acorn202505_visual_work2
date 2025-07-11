@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h3>이미지를 선택하세요</h3>
+    <!---------------------------------------image/ 뒤에 *는 image 폴더의 모든 파일 선택가능,,  multiple을 작성하면  파일을 여러개 선택 가능-->
+    <input type="file" id="fileInput" accept="image/*" multiple><!--파일 선택 버튼 생성, -->
+    <div id="preview"></div>
+    <script>
+        //fileReader를 promise로 감싸는 함수 (Promise 객체를 리턴하는 함수)
+        function readFile(file) {
+            //promise는 Promise의 resolve로 전달한 데이터가 매개변수가 되는 함수를 실행하는 객체가됨!!!
+            const promise = new Promise((resolve) => {
+                //이 안에서 비동기 동작을 하고 동작이 완료되면 reslove() 함수를 호출한다.
+                //호출 하면서 필요시 매개 변수에 동작의 결과 데이터를 전달할 수도 있다.
+                const reader = new FileReader();
+
+                //언제 끝날지 모르기 때문에 비동기 동작임!
+                reader.readAsDataURL(file);
+                //다 읽었으면 reslove() 호출
+                reader.onload = () => {
+                    resolve(reader.result); //then((data)=>{})
+                };
+            });
+            return promise;
+        }
+        //위에까지 코드가  Promise인 readFile 함수 생성과정
+
+        //이미지 파일을 선택했을 때 실행할 함수 등록
+        document.querySelector("#fileInput").addEventListener("change", (e) => {
+            //매개변수  e는 이벤트가 일어난 참조값을 담고있음.
+            const files = e.target.files; // e.target.files는 선택된 파일 객체가 들어 있는 파일 배열임.
+            //Promise 객체를 리턴해주는 readFile() 함수를 호출하면서 file 객체 전달
+            readFile(files[0])
+                .then(data => {
+                    //data는 읽은 이미지의 DataURL이다.
+                    const img = `<img src="${data}">`;
+                    document.querySelector("#preview").insertAdjacentHTML("beforeend", img);
+
+                    //두번 째 Promise 객체를 리턴해준다.
+                    //위에서 readFile은 Promise로 선언했기 때문에 .then으로 다음파일을 바로 이을 수 있다.
+                    return readFile(files[1]);
+                })
+                //두번째 생성
+                .then(data => {
+
+                    const img = `<img src="${data}">`;
+                    document.querySelector("#preview").insertAdjacentHTML("beforeend", img);
+                })
+        })
+    </script>
+
+</body>
+
+</html>
